@@ -12,6 +12,7 @@ import { useCustomChat } from '@/hooks/useChat'
 import { uploadToSupabase } from '@/lib/utils/supabase'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import MultimodalInput from '../custom/multimodal-input'
 
 const NewPost = ({ id = 1, initialMessages = [] }) => {
@@ -34,9 +35,8 @@ const NewPost = ({ id = 1, initialMessages = [] }) => {
 
       // Create post data structure
       const postData = {
-        content: input,
+        caption: input,
         files: [],
-        messages: messages,
       }
 
       // Upload all attachments to Supabase
@@ -54,22 +54,33 @@ const NewPost = ({ id = 1, initialMessages = [] }) => {
           })
 
           return {
-            ...attachment,
             url: uploadedFile.url,
-            path: uploadedFile.path,
+            name: uploadedFile.path,
           }
         })
 
-        // Wait for all uploads to complete
-        postData.files = await Promise.all(uploadPromises)
+        // Wait for all uploads to complete and stringify the files array
+        const uploadedFiles = await Promise.all(uploadPromises)
+        postData.files = uploadedFiles
       }
 
-      // Here you would typically save the post data to your database
-      // For example:
-      // await savePost(postData);
-
-      console.log('Post created successfully:', postData)
-
+      console.log(postData)
+      try {
+        // const res = await api.post('/posts', postData)
+        const res = await fetch('http://172.28.31.67:8000/api/v1/image_search/upload', {
+          method: 'POST',
+          body: JSON.stringify(postData),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        })
+        console.log(res)
+        toast.success('Post created successfully!')
+      } catch (err) {
+        console.log(err)
+        toast.error('Failed to create post')
+      }
       // Clear the form
       setInput('')
       setAttachments([])
@@ -77,7 +88,7 @@ const NewPost = ({ id = 1, initialMessages = [] }) => {
       // Close the dialog
       // You'll need to implement this using the Dialog's state
     } catch (err) {
-      console.error('Error creating post:', err)
+      toast.error('Error creating post:', err)
       setError(err.message)
     } finally {
       setIsSubmitting(false)
