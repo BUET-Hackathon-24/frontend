@@ -60,7 +60,8 @@ const User = () => {
     <div className=" sm:max-w-lg m-auto ">
       <div className="items-center justify-center   m-2 p-2">
         <div className="flex gap-3">
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32 rounded-full " />
+          {/* img src not working */}
+          <img src={user.profile_picture} alt="avatar" className="w-32 h-32 rounded-full" />
           <div className="flex flex-col w-full  items-start justify-center">
             <div className="text-2xl text-left font-bold">{user.name}</div>
             <div className="text-lg text-left">{user.email}</div>
