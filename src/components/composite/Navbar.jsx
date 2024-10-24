@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import { useNavigate } from 'react-router'
 import { ModeToggle } from '.'
+import NotificationComponent from '../custom/notification'
 import NewPost from './NewPost'
 
 const components = [
@@ -162,6 +163,7 @@ export function Navbar() {
 
         {/* Profile Popover */}
         <div className="ml-auto flex items-center space-x-2">
+          <NotificationComponent />
           <NewPost />
           <ModeToggle />
           <Popover>
