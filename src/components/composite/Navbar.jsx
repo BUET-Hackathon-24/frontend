@@ -173,7 +173,10 @@ export function Navbar() {
             </PopoverTrigger>
             <PopoverContent className="w-56 p-2" align="start">
               <div className="space-y-4">
-                <div className="flex flex-col space-y-1">
+                <div
+                  onClick={() => navigate('/user/profile')}
+                  className="flex flex-col space-y-1 cursor-pointer"
+                >
                   <p className="text-sm font-medium">John Doe</p>
                   <p className="text-xs text-muted-foreground">john@example.com</p>
                 </div>

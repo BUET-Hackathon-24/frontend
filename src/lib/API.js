@@ -8,8 +8,8 @@ const setItem = (key, value) => {
 export const remote_api_base = 'htt'
 export const remote_base_url = 'https://meetnmarry.com'
 
-export const local_api_base = 'http://192.168.0.218:3000/api/v1'
-export const local_base_url = 'http://192.168.0.218:3000/'
+export const local_api_base = 'http://172.28.31.70:3000/api/v1'
+export const local_base_url = 'http://172.28.31.70:3000/'
 
 const is_local = true
 
@@ -290,6 +290,8 @@ const endpoints = {
   //TODO: make it explicit
   exchangeToken: async (data) => await postX('auth/exchange-token', data),
   googleAuth: async () => await getX('auth/google'),
+  profileInfo: async () => await getX('profile'),
+
   contactUs: async (name, email, subject, description) =>
     await postX('contact-us', {
       name,
