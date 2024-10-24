@@ -1,5 +1,4 @@
-import { getApiResponse, setAuthToken } from '@/lib/API'
-import { decodeJwt } from 'jose'
+import api from '@/lib/axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -22,12 +21,20 @@ export default function OAuthCallback() {
 
   async function exchangeToken() {
     const data = getParams(window.location.href)
-    setAuthToken(data.access_token)
-    const user = decodeJwt(data.access_token)
-    console.log(user)
-    await getApiResponse('exchangeToken', data)
-    navigate('/user/chat')
-    console.log(data)
+    // setAuthToken(data.access_token)
+    localStorage.setItem('access_token', data.access_token)
+    localStorage.setItem('refresh_token', data.refresh_token)
+
+    // const user = decodeJwt(data.access_token)
+    // console.log(user)
+    const res = await api.post('auth/exchange-token', {
+      access_token: data.access_token,
+    })
+    // console.log(res)
+    localStorage.setItem('access_token', res?.data.access_token)
+    localStorage.setItem('refresh_token', res?.data.refresh_token)
+    console.log(res)
+    navigate('/user/profile')
   }
   useEffect(() => {
     exchangeToken()

@@ -1,8 +1,7 @@
-import { getRawAuthToken } from '@/lib/API'
 import { Navigate, Outlet } from 'react-router-dom'
 
 export const ProtectedRoute = ({ role }) => {
-  const authToken = getRawAuthToken()
+  const authToken = localStorage.getItem('access_token')
 
   if (!authToken) {
     return <Navigate to={'/signin'} />

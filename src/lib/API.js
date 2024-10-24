@@ -58,7 +58,7 @@ export const clearAuthToken = () => {
 }
 
 export function getAuthToken() {
-  return 'Bearer ' + localStorage.getItem('authToken').replaceAll('"', '')
+  return 'Bearer ' + localStorage.getItem('access_token').replaceAll('"', '')
 }
 /**
  * Parses the authentication token and returns the payload as a JSON object.

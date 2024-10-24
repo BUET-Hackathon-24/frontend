@@ -24,13 +24,13 @@ function App() {
           <Route path="/signin" element={<LoginPage />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/user/profile" element={<User />} />
           <Route element={<Template />}>
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<MapComponent />} />
             <Route path="/place" element={<PlaceDetails />} />
 
             <Route path="/user" element={<ProtectedRoute role="user" />}>
+            <Route path="/user/profile" element={<User />} />
               <Route path="/user/chat" element={<Chat />} />
             </Route>
           </Route>
