@@ -29,22 +29,28 @@ const User = () => {
   return (
     <div className="m-1">
       <div className="items-center justify-center w-screen  m-2 p-2">
-        <div className="flex gap-1">
+        <div className="flex gap-3">
           <img src={user.dp} alt="avatar" className="w-32 h-32 rounded-full " />
-          <div className="flex flex-row items-center justify-center">
-            <p className="text-center font-bold text-lg">12 Posts</p>
-            <p className="text-center font-bold text-lg">343 Followers</p>
-            <p className="text-center font-bold text-lg">34 Following</p>
+          <div className="flex flex-col w-full  items-start justify-center">
+            <div className="text-2xl text-left font-bold">{user.name}</div>
+            <div className="text-lg text-left">{user.email}</div>
           </div>
         </div>
-        <p className="text-2xl font-bold">{user.name}</p>
-        <p className="text-lg">{user.email}</p>
-        <p className="text-lg">{user.bio}</p>
-        <div className="grid grid-cols-3 gap-4">
-          {user.images.map((image, index) => (
-            <img key={index} src={image} alt="user image" className="w-full h-48 object-cover" />
-          ))}
+        <div className="flex flex-row items-center text-center  font-bold text-lg justify-around mt-3">
+          <div className="flex flex-col items-center justify-center">
+            <div>100</div>
+            <div>Posts</div>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            <div>100</div>
+            <div>Followers</div>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            <div>100</div>
+            <div>Following</div>
+          </div>
         </div>
+            <div className="text-lg text-center mt-2">{user.bio}</div>
       </div>
 
       {/* gallery */}
