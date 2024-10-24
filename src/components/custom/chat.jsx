@@ -5,7 +5,7 @@ import { Message } from './message'
 import { MultimodalInput } from './multimodal-input'
 import { Overview } from './overview'
 
-export default function Chat({ id, initialMessages }) {
+export default function Chat({ id = 0, initialMessages }) {
   const { messages, handleSubmit, input, setInput, append, isLoading, stop } = useCustomChat({
     id,
     initialMessages,

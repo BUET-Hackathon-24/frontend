@@ -1,6 +1,7 @@
 import api from '@/lib/axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { updateAuthAtStorage } from './utils'
 
 function getParams(url) {
   const params = {}
@@ -30,9 +31,7 @@ export default function OAuthCallback() {
     const res = await api.post('auth/exchange-token', {
       access_token: data.access_token,
     })
-    // console.log(res)
-    localStorage.setItem('access_token', res?.data.access_token)
-    localStorage.setItem('refresh_token', res?.data.refresh_token)
+    updateAuthAtStorage(res?.data)
     console.log(res)
     navigate('/user/profile')
   }

@@ -47,9 +47,11 @@ const User = () => {
           email: response.data?.email,
           profile_picture: response.data?.profile_picture,
           bio: response.data?.bio,
-          images: response.data?.images,
+          images: response.data?.images || [{ src: response.data.profile_picture }],
         }))
         localStorage.setItem('avatar', response.data.profile_picture)
+        localStorage.setItem('name', response.data.name)
+        localStorage.setItem('email', response.data.email)
       })
       .catch((error) => {
         console.log(error)
@@ -57,102 +59,129 @@ const User = () => {
   }, [])
 
   return (
-    <div className=" sm:max-w-lg m-auto ">
-      <div className="items-center justify-center   m-2 p-2">
-        <div className="flex gap-3">
-          {/* img src not working */}
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32 rounded-full" />
-          <div className="flex flex-col w-full  items-start justify-center">
-            <div className="text-2xl text-left font-bold">{user.name}</div>
-            <div className="text-lg text-left">{user.email}</div>
-          </div>
-        </div>
-        <div className="flex flex-row items-center text-center  font-bold text-lg justify-around mt-3">
-          <div className="flex flex-col items-center justify-center">
-            <div>100</div>
-            <div>Posts</div>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <div>100</div>
-            <div>Followers</div>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <div>100</div>
-            <div>Following</div>
-          </div>
-        </div>
-        <div className="  text-lg text-center mt-2 w-full items-center">
-          {user.bio == '' || user.bio == null ? (
-            <div className="flex w-full m-auto items-center">
-              <div>Introduce yourself and your travel style... </div>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline">
-                    <Pen />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Edit Bio</DialogTitle>
-                    <DialogDescription>
-                      Introduce yourself and your travel style... here. Click save when you're done.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="username" className="text-right">
-                        Bio
-                      </Label>
-                      <Input id="username" defaultValue="" className="col-span-3" />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="submit">Save changes</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+    user && (
+      <div className=" sm:max-w-lg m-auto ">
+        <div className="items-center justify-center   m-2 p-2">
+          <div className="flex gap-3">
+            {/* img src not working */}
+            <img src={user.profile_picture} alt="avatar" className="w-32 h-32 rounded-full" />
+            <div className="flex flex-col w-full  items-start justify-center">
+              <div className="text-2xl text-left font-bold">{user.name}</div>
+              <div className="text-lg text-left">{user.email}</div>
             </div>
-          ) : (
-            user.bio
-          )}
+          </div>
+          <div className="flex flex-row items-center text-center  font-bold text-lg justify-around mt-3">
+            <div className="flex flex-col items-center justify-center">
+              <div>100</div>
+              <div>Posts</div>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <div>100</div>
+              <div>Followers</div>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <div>100</div>
+              <div>Following</div>
+            </div>
+          </div>
+          <div className="  text-lg text-center mt-2 w-full items-center">
+            {user.bio == '' || user.bio == null ? (
+              <div className="flex w-full m-auto items-center">
+                <div>Introduce yourself and your travel style... </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <Pen />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Edit Bio</DialogTitle>
+                      <DialogDescription>
+                        Introduce yourself and your travel style... here. Click save when you're
+                        done.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="username" className="text-right">
+                          Bio
+                        </Label>
+                        <Input id="username" defaultValue="" className="col-span-3" />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="submit">Save changes</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            ) : (
+              user.bio
+            )}
+          </div>
+        </div>
+
+        {/* gallery */}
+
+        <div className="p-1">
+          <div className="flex flex-row w-full mb-3 items-center justify-evenly">
+            <IconGrid4x4
+              onClick={() => setActiveTab(1)}
+              size={35}
+              className={cn(activeTab == 1 ? 'text-bold' : 'text-gray-300', 'cursor-pointer')}
+            />
+            <MoveIcon
+              onClick={() => setActiveTab(2)}
+              size={35}
+              className={cn(activeTab == 2 ? 'text-bold' : 'text-gray-300', 'cursor-pointer')}
+            />
+            <User2Icon
+              onClick={() => setActiveTab(3)}
+              size={40}
+              className={cn(activeTab == 3 ? 'text-bold' : 'text-gray-300', 'cursor-pointer')}
+            />
+          </div>
+
+          <div className="grid grid-cols-3 gap-1">
+            {user.images.map((image, index) => (
+              <ImageItem
+                key={index}
+                name={user.name}
+                avatar={user.avatar}
+                src={image.image}
+                alt={image.title}
+                date={image.date}
+                title={image.title}
+              />
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* gallery */}
-
-      <div className="p-1">
-        <div className="flex flex-row w-full mb-3 items-center justify-evenly">
-          <IconGrid4x4
-            onClick={() => setActiveTab(1)}
-            size={35}
-            className={cn(activeTab == 1 ? 'text-bold' : 'text-gray-300', 'cursor-pointer')}
-          />
-          <MoveIcon
-            onClick={() => setActiveTab(2)}
-            size={35}
-            className={cn(activeTab == 2 ? 'text-bold' : 'text-gray-300', 'cursor-pointer')}
-          />
-          <User2Icon
-            onClick={() => setActiveTab(3)}
-            size={40}
-            className={cn(activeTab == 3 ? 'text-bold' : 'text-gray-300', 'cursor-pointer')}
-          />
-        </div>
-
-        <div className="grid grid-cols-3 gap-1">
-          <img src={user.profile_picture} alt="avatar" className="w-32  aspect-square " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-          <img src={user.profile_picture} alt="avatar" className="w-32 h-32  " />
-        </div>
-      </div>
-    </div>
+    )
   )
 }
 
 export default User
+
+const ImageItem = ({ name, avatar, src, alt, date, title }) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <img src={src} alt={alt} height={128} width={128} className="w-32 h-32" />
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>
+            <div className="flex gap-3">
+              <img src={avatar} alt={name} className="w-32 h-32 rounded-full" />
+              <div>{name}</div>
+              <div>{date}</div>
+            </div>
+          </DialogTitle>
+          <DialogDescription>{title}</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  )
+}

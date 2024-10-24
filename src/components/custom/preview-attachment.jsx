@@ -9,19 +9,19 @@ const getFilePreviewInfo = (contentType, name) => {
       case 'pdf':
         return {
           icon: <FileIcon className="w-8 h-8 text-red-500" />,
-          label: 'PDF Document',
+          label: 'PDF',
         }
       case 'txt':
         return {
           icon: <FileTextIcon className="w-8 h-8 text-blue-500" />,
-          label: 'Text File',
+          label: 'Text',
         }
       case 'mp4':
       case 'mov':
       case 'avi':
         return {
           icon: <FileVideoIcon className="w-8 h-8 text-purple-500" />,
-          label: 'Video File',
+          label: 'Video',
         }
       default:
         return {

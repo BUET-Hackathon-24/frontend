@@ -134,6 +134,7 @@ export function MultimodalInput({
   setAttachments,
   messages,
   append,
+  suggestions = true,
 }) {
   const [uploadQueue, setUploadQueue] = useState([])
   const [isDragging, setIsDragging] = useState(false)
@@ -226,20 +227,25 @@ export function MultimodalInput({
     <div className="relative w-full flex flex-col gap-4">
       {messages.length === 0 && files.length === 0 && uploadQueue.length === 0 && !isDragging && (
         <div className="grid sm:grid-cols-2 gap-2 w-full md:px-0 mx-auto md:max-w-[500px]">
-          {suggestedActions.map((suggestedAction, index) => (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ delay: 0.05 * index }}
-              key={index}
-            >
-              <Button variant="outline" size="sm" onClick={() => setInput(suggestedAction.action)}>
-                {suggestedAction.title}{' '}
-                <span className="text-muted-foreground">{suggestedAction.label}</span>
-              </Button>
-            </motion.div>
-          ))}
+          {suggestions &&
+            suggestedActions.map((suggestedAction, index) => (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ delay: 0.05 * index }}
+                key={index}
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setInput(suggestedAction.action)}
+                >
+                  {suggestedAction.title}{' '}
+                  <span className="text-muted-foreground">{suggestedAction.label}</span>
+                </Button>
+              </motion.div>
+            ))}
         </div>
       )}
 

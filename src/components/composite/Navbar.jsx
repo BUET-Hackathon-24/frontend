@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import { useNavigate } from 'react-router'
 import { ModeToggle } from '.'
+import NewPost from './NewPost'
 
 const components = [
   {
@@ -161,13 +162,14 @@ export function Navbar() {
 
         {/* Profile Popover */}
         <div className="ml-auto flex items-center space-x-2">
+          <NewPost />
           <ModeToggle />
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src={localStorage.getItem('avatar')} />
+                  <AvatarFallback>U</AvatarFallback>
                 </Avatar>
               </Button>
             </PopoverTrigger>
@@ -177,8 +179,10 @@ export function Navbar() {
                   onClick={() => navigate('/user/profile')}
                   className="flex flex-col space-y-1 cursor-pointer"
                 >
-                  <p className="text-sm font-medium">John Doe</p>
-                  <p className="text-xs text-muted-foreground">john@example.com</p>
+                  <p className="text-sm font-medium">{localStorage.getItem('name') ?? 'user'}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {localStorage.getItem('email') ?? 'user@gmail.com'}
+                  </p>
                 </div>
                 <Separator />
                 <div className="space-y-1">
