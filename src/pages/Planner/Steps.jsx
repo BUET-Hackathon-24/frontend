@@ -5,13 +5,13 @@ import { getLocalTimeZone, parseDate } from "@internationalized/date";
 import { DateRangePicker } from '@nextui-org/react';
 import { useDateFormatter } from "@react-aria/i18n";
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Calendar, MapPin, Plane, X } from 'lucide-react';
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import LocationAutocomplete from './LocationAutoComplete';
-import { MyLocAtom } from './store';
+import { DestLocAtom, MyLocAtom, TicksAtom } from './store';
 
 const container = {
   hidden: { opacity: 0 },
@@ -38,7 +38,8 @@ const item = {
 };
 
 const Steps = () => {
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const setTicks = useSetAtom(TicksAtom)
+  const [selectedPlace, setSelectedPlace] = useAtom(DestLocAtom);
   const [currentLocation, setCurrentLocation] = useAtom(MyLocAtom);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -77,6 +78,8 @@ const Steps = () => {
       });
       const responseData = await res.json();
       setData(responseData);
+
+      setTicks(responseData.map.split(','))
 
       // Parse tourist attractions and update map markers
       if (responseData.tourist_attraction) {
@@ -123,7 +126,7 @@ const Steps = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-xl">
+    <div className="space-y-6 w-full">
       <AnimatePresence mode="wait">
         {!data ? (
           <motion.div
