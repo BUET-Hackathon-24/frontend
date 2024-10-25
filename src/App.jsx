@@ -3,7 +3,6 @@ import { ThemeProvider } from '@/components/theme-provider';
 import LoginPage from '@/pages/auth/Login';
 import OAuthCallback from '@/pages/auth/OAuthCallback';
 import SignUp from '@/pages/auth/SignUp';
-import Home from '@/pages/Home/home';
 import Template from '@/pages/Template';
 import { Route, Routes } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
@@ -52,14 +51,13 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/logout" element={<Logout />} />
           <Route element={<Template />}>
-            <Route path="/" element={<Home />} />
+          <Route path="/" element={<Planner />} />
             <Route path="/map" element={<MapComponent />} />
             <Route path="/place" element={<PlaceDetails />} />
             <Route path="/user" element={<ProtectedRoute role="user" />}>
               <Route path="/user/profile" element={<User />} />
               <Route path="/user/chat" element={<Chat />} />
               <Route path="/user/blog" element={<Ed />} />
-              <Route path="/user/plan" element={<Planner />} />
               </Route>
               <Route path="/user/vlog" element ={<Vlog/>}/>
           </Route>
