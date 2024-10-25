@@ -7,7 +7,7 @@ const Vlog = () => {
 
   const handle = async () => {
       const res = await fetch(AI_API + '/image_search/vlog', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('access_token')
