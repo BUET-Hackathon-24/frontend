@@ -1,11 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import api from '@/lib/axios'
+import { useSetAtom } from 'jotai'
 import { Loader2, Search, X } from 'lucide-react'
 import { useState } from 'react'
+import { SearchResultAtom } from './store'
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const setSearchResult = useSetAtom(SearchResultAtom)
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -14,7 +18,12 @@ const SearchBar = () => {
     setIsLoading(true)
     try {
       // Add your search logic here
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulated API call
+      const search_string = encodeURIComponent(searchTerm)
+
+      const res = await api.get(`photos/search/${search_string}`)
+
+      setSearchResult(res.data)
+      console.log(res.data)
     } catch (error) {
       console.error('Search error:', error)
     } finally {

@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
   Autocomplete,
   DirectionsRenderer,
@@ -8,9 +8,9 @@ import {
   Marker,
   TransitLayer,
   useJsApiLoader,
-} from '@react-google-maps/api'
-import { ArrowUpRight, X } from 'lucide-react'
-import { useRef, useState } from 'react'
+} from '@react-google-maps/api';
+import { ArrowUpRight, X } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 const center = { lat: 48.8584, lng: 2.2945 }
 
@@ -42,11 +42,13 @@ const GoogleMapsDirections = () => {
       return
     }
     const directionsService = new google.maps.DirectionsService()
+    console.log(originRef.current.value, destinationRef.current.value)
     const results = await directionsService.route({
       origin: originRef.current.value,
       destination: destinationRef.current.value,
       travelMode: google.maps.TravelMode.DRIVING,
     })
+
     setDirectionsResponse(results)
     setDistance(results.routes[0].legs[0].distance.text)
     setDuration(results.routes[0].legs[0].duration.text)
@@ -66,12 +68,12 @@ const GoogleMapsDirections = () => {
         <GoogleMap
           center={center}
           zoom={15}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
+          mapContainerStyle={{ width: '50%', height: '80%' }}
           options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
+            zoomControl: true,
+            streetViewControl: true,
+            mapTypeControl: true,
+            fullscreenControl: true,
           }}
           onLoad={(map) => setMap(map)}
         >

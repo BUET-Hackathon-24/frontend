@@ -3,9 +3,11 @@ import api from '@/lib/axios'
 import { cn } from '@/lib/utils'
 import { IconGrid4x4, IconLayoutList, IconPhoto, IconUser } from '@tabler/icons-react'
 import { format } from 'date-fns'
+import { useAtomValue } from 'jotai'
 import { Clock, Heart, MessageCircle, Share2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import SearchBar from './SearchBar'
+import { SearchResultAtom } from './store'
 
 const Gallery = () => {
   const [posts, setPosts] = useState([])
@@ -98,20 +100,39 @@ const FeedView = ({ posts }) => (
 )
 
 // Grid View Component
-const GridView = ({ posts }) => (
-  <div className="grid grid-cols-3 gap-1">
-    {posts.map((post, index) => (
-      <GridItem
-        key={index}
-        post={post}
-        name={localStorage.getItem('name')}
-        avatar={localStorage.getItem('avatar')}
-      />
-    ))}
+export const GridView = ({ posts }) => {
+  const searchResults = useAtomValue(SearchResultAtom)
 
-    <SearchBar />
-  </div>
-)
+  return (
+    <div className="grid grid-cols-3 gap-1">
+      {searchResults.length == 0
+        ? posts.map((post, index) => (
+            <GridItem
+              key={index}
+              post={post}
+              name={localStorage.getItem('name')}
+              avatar={localStorage.getItem('avatar')}
+            />
+          ))
+        : searchResults.map((post, index) => <SearchItem key={index} post={post} />)}
+
+      <SearchBar />
+    </div>
+  )
+}
+
+const SearchItem = ({ post }) => {
+  const { caption, created_at, name, post_id, upvote_count, url, user_id } = post
+
+  return (
+    <div className="relative aspect-square cursor-pointer">
+      <img src={url} alt="" className="w-full h-full object-cover" />
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+        <p className="text-white text-xs line-clamp-2">{caption}</p>
+      </div>
+    </div>
+  )
+}
 
 // Grid Item Component
 const GridItem = ({ post }) => {

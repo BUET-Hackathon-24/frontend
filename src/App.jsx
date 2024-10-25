@@ -1,21 +1,21 @@
-import { ProtectedRoute } from '@/components/composite'
-import { ThemeProvider } from '@/components/theme-provider'
-import LoginPage from '@/pages/auth/Login'
-import OAuthCallback from '@/pages/auth/OAuthCallback'
-import SignUp from '@/pages/auth/SignUp'
-import Home from '@/pages/Home/home'
-import Template from '@/pages/Template'
-import { Route, Routes } from 'react-router'
-import { BrowserRouter } from 'react-router-dom'
-import { Toaster } from 'sonner'
-import './App.css'
-import Chat from './components/custom/chat'
-import Logout from './pages/auth/Logout'
-import RichTextExample from './pages/Blog/BlogEditor'
-import Editor from './pages/Blog/editor'
-import MapComponent from './pages/Map/Map'
-import PlaceDetails from './pages/Map/PlaceDetails'
-import User from './pages/Profile/User'
+import { ProtectedRoute } from '@/components/composite';
+import { ThemeProvider } from '@/components/theme-provider';
+import LoginPage from '@/pages/auth/Login';
+import OAuthCallback from '@/pages/auth/OAuthCallback';
+import SignUp from '@/pages/auth/SignUp';
+import Home from '@/pages/Home/home';
+import Template from '@/pages/Template';
+import { Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import './App.css';
+import Chat from './components/custom/chat';
+import Logout from './pages/auth/Logout';
+import Ed from './pages/Blog/Ed';
+import MapComponent from './pages/Map/Map';
+import PlaceDetails from './pages/Map/PlaceDetails';
+import Planner from './pages/Planner/Planner';
+import User from './pages/Profile/User';
 
 // Lazy load components
 // const LoginPage = lazy(() => import('@/pages/auth/Login'))
@@ -57,8 +57,8 @@ function App() {
             <Route path="/user" element={<ProtectedRoute role="user" />}>
               <Route path="/user/profile" element={<User />} />
               <Route path="/user/chat" element={<Chat />} />
-              <Route path="/user/blog" element={<RichTextExample />} />
-              <Route path="/user/edit" element={<Editor />} />
+              <Route path="/user/edit" element={<Ed />} />
+              <Route path="/user/plan" element={<Planner />} />
             </Route>
           </Route>
         </Routes>

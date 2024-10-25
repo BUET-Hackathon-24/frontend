@@ -12,11 +12,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import api from '@/lib/axios'
 import { Pen } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Gallery from './Gallery'
 
 const User = () => {
   const [activeTab, setActiveTab] = useState(1)
+  const bioTabRef = useRef()
 
   const userr = {
     name: 'John Doe',
@@ -54,6 +55,22 @@ const User = () => {
         console.log(error)
       })
   }, [])
+
+  const handleUpdateBio = async () => {
+    const bio = bioTabRef.current.value
+    try {
+      const res = await api.patch('user/bio', {
+        bio,
+      })
+      console.log(res.data)
+      setUser((prev) => ({
+        ...prev,
+        bio: res.data.bio,
+      }))
+    } catch (error) {
+      console.error('Update bio error:', error)
+    }
+  }
 
   return (
     user && (
@@ -104,11 +121,18 @@ const User = () => {
                         <Label htmlFor="username" className="text-right">
                           Bio
                         </Label>
-                        <Input id="username" defaultValue="" className="col-span-3" />
+                        <Input
+                          ref={bioTabRef}
+                          id="username"
+                          defaultValue=""
+                          className="col-span-3"
+                        />
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button type="submit">Save changes</Button>
+                      <Button type="submit" onClick={handleUpdateBio}>
+                        Save changes
+                      </Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
