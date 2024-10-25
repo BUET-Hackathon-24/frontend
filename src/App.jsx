@@ -10,6 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import './App.css';
 import Chat from './components/custom/chat';
+import Vlog from './components/ui/Vlog';
 import Logout from './pages/auth/Logout';
 import Ed from './pages/Blog/Ed';
 import MapComponent from './pages/Map/Map';
@@ -57,9 +58,10 @@ function App() {
             <Route path="/user" element={<ProtectedRoute role="user" />}>
               <Route path="/user/profile" element={<User />} />
               <Route path="/user/chat" element={<Chat />} />
-              <Route path="/user/edit" element={<Ed />} />
+              <Route path="/user/blog" element={<Ed />} />
               <Route path="/user/plan" element={<Planner />} />
-            </Route>
+              </Route>
+              <Route path="/user/vlog" element ={<Vlog/>}/>
           </Route>
         </Routes>
         <Toaster />

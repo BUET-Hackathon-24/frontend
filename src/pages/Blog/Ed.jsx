@@ -1,20 +1,24 @@
-import { AI_API } from '@/constants'
-import MDEditor from '@uiw/react-md-editor'
-import React, { useEffect } from 'react'
+import { Button } from '@/components/ui';
+import { AI_API } from '@/constants';
+import api from '@/lib/axios';
+import MDEditor from '@uiw/react-md-editor';
 
+import React, { useEffect } from 'react';
 export default function Ed() {
   const [value, setValue] = React.useState('**Hello world!!!**')
   useEffect(() => {
     const getBlog = async () => {
       try {
+
         let res = await fetch(AI_API + '/image_search/blog', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
           },
           body: JSON.stringify({
             start: 1,
-            end: 2,
+            end: 2
           }),
         })
         const data = await res.json()
@@ -35,10 +39,25 @@ export default function Ed() {
 
     getBlog()
   }, [])
+
+
+
+  const submitBlog = async()=> {
+    const res = await api.post('/blogs', {
+      title: 'Test Blog',
+      value: value
+    })
+    console.log(res.data)
+  }
   return (
-    <div className="container" data-color-mode="light">
-      <MDEditor value={value} onChange={setValue} />
-      <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
+    <div className="container" data-color-mode="media">
+    <div>
+    <MDEditor value={value} onChange={setValue} />
+    <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
+    <div className=' w-full'>
+    </div>
+    <Button className='m-auto' variants="outlined" onClick={submitBlog}>Submit</Button>
+      </div>
     </div>
   )
 }

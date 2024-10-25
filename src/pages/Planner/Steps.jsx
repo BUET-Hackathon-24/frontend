@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AI_API } from '@/constants';
+import api from '@/lib/axios';
 import { getLocalTimeZone, parseDate } from "@internationalized/date";
 import { DateRangePicker } from '@nextui-org/react';
 import { useDateFormatter } from "@react-aria/i18n";
@@ -60,7 +61,7 @@ const Steps = () => {
     setLoading(true);
     try {
       const payload = {
-        "budget": "medium",
+        "budget": "low",
         "origin": currentLocation.address,
         "destination": selectedPlace.address,
         "start_date": value.start.toString(),
@@ -73,11 +74,22 @@ const Steps = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         },
         body: JSON.stringify(payload),
       });
       const responseData = await res.json();
       setData(responseData);
+
+      const md = responseData.markdown;
+
+
+      await api.post('/plans', {
+        title: responseData?.title,
+        data: md,
+        start_date: value.start.toString(),
+        end_date: value.end.toString(),
+      })
 
       setTicks(responseData.map.split(','))
 
@@ -124,6 +136,41 @@ const Steps = () => {
 
     return attractions;
   };
+
+
+  const NextButton = () => {
+
+    const nextCall = async() => {
+
+      const payload = {
+        "budget": "low",
+        "origin": currentLocation.address,
+        "destination": selectedPlace.address,
+        "start_date": value.start.toString(),
+        "end_date": value.end.toString(),
+        "dest_lat": selectedPlace.coordinates.lat + "",
+        "dest_lng": selectedPlace.coordinates.lng + ""
+      };
+
+      const res = await fetch(AI_API + '/image_search/get_plan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        body: JSON.stringify(payload),
+      });
+      const responseData = await res.json();
+      setData(responseData);
+
+
+    }
+    return (
+      <Button variant='contained' color='primary' onClick={nextCall}></Button>
+    )
+
+  }
+
 
   return (
     <div className="space-y-6 w-full">
@@ -214,6 +261,9 @@ const Steps = () => {
                 </motion.div>
               </CardContent>
             </Card>
+
+          <NextButton />
+
           </motion.div>
         ) : (
           <motion.div
@@ -297,10 +347,15 @@ const Steps = () => {
               </ReactMarkdown>
             </div>
           </motion.div>
+
         )}
+          <NextButton  />
       </AnimatePresence>
     </div>
   );
 };
+
+
+
 
 export default Steps;

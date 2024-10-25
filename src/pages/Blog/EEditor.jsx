@@ -1,7 +1,7 @@
-import { AI_API } from '@/constants'
-import { useEffect, useState } from 'react'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css' // Import Quill styles
+import { AI_API } from '@/constants';
+import { useEffect, useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 const RichTextEditor = () => {
   const [text, setText] = useState('')
@@ -13,6 +13,8 @@ const RichTextEditor = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+
           },
           body: JSON.stringify({
             start: 1,

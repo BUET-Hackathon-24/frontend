@@ -215,6 +215,23 @@ const GoogleMapsDirections = () => {
     );
   }
 
+  function getLatLng(address) {
+
+    console.log(address)
+    const geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ 'address': address }, function(results, status) {
+      if (status === 'OK') {
+        const lat = results[0].geometry.location.lat();
+        const lng = results[0].geometry.location.lng();
+       return { lat, lng };
+      } else {
+        console.error('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+
   return (
     <motion.div
       className="relative h-screen w-[50svw]"
@@ -255,15 +272,18 @@ const GoogleMapsDirections = () => {
             <DirectionsRenderer
               directions={directionsResponse}
               options={{
-                suppressMarkers: true,
+
+
                 polylineOptions: {
                   strokeColor: isDarkMode ? "#4CAF50" : "#2196F3",
-                  strokeWeight: 5,
+                  strokeWeight: 4,
                 }
               }}
             />
           )}
 
+
+          <Marker position={destLoc.coordinates} icon={markerIcons.current} animation={window.google.maps.Animation.DROP} title="Destination" />
           <AnimatePresence>
             {attractions.map((attraction, index) => (
               <Marker
@@ -277,6 +297,10 @@ const GoogleMapsDirections = () => {
                 onClick={() => setSelectedAttraction(attraction)}
               />
             ))}
+
+            {ticks.map((tick, i)=> (
+                <Marker key={i} position={getLatLng(tick)} animation={window.google?.maps?.Animation?.BOUNCE}  />
+              ))}
           </AnimatePresence>
 
           {selectedAttraction && currentLocation?.coordinates && (
