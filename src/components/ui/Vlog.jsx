@@ -1,8 +1,9 @@
 import { AI_API } from '@/constants';
 import api from '@/lib/axios';
+import { redirect } from 'react-router';
+import { Button } from './Button';
 
 const Vlog = () => {
-
 
   const handle = async () => {
       const res = await fetch(AI_API + '/image_search/vlog', {
@@ -17,13 +18,15 @@ const Vlog = () => {
         title: "",
         url: url,
       })
+      redirect(url, '_blank')
   }
   return (
-    <div>
+    <div className='w-screen h-screen'>
+    <div className='m-auto '>
       <Button variants="contained" onClick={handle} >
-        Generate Vlog for You
+        Generate
       </Button>
-
+    </div>
     </div>
 
 
